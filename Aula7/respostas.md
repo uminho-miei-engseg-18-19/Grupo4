@@ -26,12 +26,14 @@ identificadores em um contexto específico).
 * Não deve ser trivial para qualquer terceiro (ou seja, qualquer outro que não o controlador ou processador) reproduzir os pseudônimos (para evitar o uso dos mesmos pseudônimos em diferentes dados domínios de processamento).
 
 **Hashing without key** 
+
 Hashing é uma técnica que pode ser usada para derivar pseudônimos, mas tem algumas desvantagens do que foi falado na secção anterior. Uma função de *hash* critográfica é uma função com propriendades especificas, esta pega numa mensagem inicial e tranforma no numero de bits que se pretende. Importante não utilizar o SHA-1 e o MD5 e utilizar SHA-2 e o SHA-3.
 
 Em relação às propriedades D1 e D2, a D2 não é válida, pois qualquer terceiro que aplique a mesma função hash ao mesmo identificador recebe o mesmo pseudônimo. E a D1 também não necessariamente se mantém, uma vez que é trivial para qualquer terceiro verificar, para um determinado identificador, se um pseudônimo corresponde a esse identificador.
 
 
 **Hashing with key or salt**
+
 Uma boa abordagem para gerar pseudônimos é a utilização de uma hash com salt, não dependendo unicamente do algoritmo. A principal diferença das funções hash convencionais é que, para o mesmo input (um dado identificador), vários pseudônimos diferentes podem ser produzidos, de acordo com a escolha da chave específica - e, assim, a propriedade D2 é garantida. A propriedade D1 também é válida, um adversário não tem conhecimento da chave e, assim, não está em posição de verificar se um pseudônimo corresponde a um identificador conhecido específico.
 
 Os dados não devem ser sempre computados com a mesma chave. Uma função de hash se a chave secreta for destruída com segurança e a função hash é criptograficamente forte, é computacionalmente difícil, mesmo para o controlador de dados,para inverter o pseudônimo para o identificador inicial, mesmo que o controlador tenha conhecimento do identificadores.
@@ -39,6 +41,7 @@ Os dados não devem ser sempre computados com a mesma chave. Uma função de has
 Outra abordagem pode ser a utilização de um salt escolhido aleatoriamente.
 
 **Cifras como técnica de pseudonimização**
+
 A utilização de cifas simétricas, é considerado um método eficiente de obter pseudónimos. Nos casos mais gerais, o identificador do indivíduo pode ser cifrado através de um algoritmo de encriptação simétrica, fornecendo assim um criptograma que será usado com pseudónimo. A mesma chave será necessária para a desincriptação. Tal pseudónimo satisfaz as propriedades de pseudonimização, desde que nenhuma terceira parte tenha acesso à chave.
 
 Tal como acontece com as funções de *hash*, as chaves que são utilizadas tem um tamanho minimo de 256 bits, de forma a ser considerado um cifra de segurança adequada. Ao contrário do que acontece com as funções de *hash*, é que o controlador (dono da chave secreta) pode a qualquer momento recuperar os dados do indivíduo incialmente definidos a partir de processo de decifragem. Isto permite que seja mais díficil identificar os indivíduos, uma vez que estes não guardam os identicadores.
@@ -48,6 +51,7 @@ No entanto as cifras assimétricas também podem ser empregues nestes casos, a p
 As propriedades das crifras assimétricas também podem ser usado em vários outros contextos relacionados à ofusacação das identidades dos indivíduos. É de realçar que os algoritmos de cifra assimétrica requerem o uso de chaves muito grandes, que por sua vez pode dar origem a restrições de implementação, para além de serem menos eficientes que algoritmos de cifra simétrica. 
 
 **Outras técnicas baseadas em criptografia**
+
 Para além das técnicas de pseudominização apresentadas em cima, é possível combinar esquemas criptográficos e fornecer uma abordagem de pseudominização bastante robusta/segura.
 
 Existem ainda outras soluções, tais como as soluções descentralizadas, que permite a cada utilizador gerar e controlar os próprios pseudónimos.
@@ -55,9 +59,11 @@ Existem ainda outras soluções, tais como as soluções descentralizadas, que p
 Por fim, é de salientar que um desafio comum à maior parte das técnicas criptográficas é gestão das chaves, uma vez que o seu processo não é trivial, dependendo da escalabilidade da aplicação, como também da técnica escolhida.
 
 **Tokenisation** 
+
 *Tokenisation* refere-se ao processo em que os dados dos indivíduos são substituídos por valores gerados aleatóriamente, mais conhecido como *tokens*, sem ter qualquer relação matemática com os indentificadores originais. Assim, o conhecimento de um token por parte de uma terceira parte é inútil, exceto para o controlador ou para o processador. Este tipo de técnica é geralmente usado para transições financeiras.
 
 **Outras medidas**
+
 Existem também diversas outras técnicas no contexto da pseudonimização, sendo estas um pouco restritas quanto à sua aplicação:
 
 1. *Masking* - refere-se ao processo de esconder parte de um indenticador de um indivíduo com caracteres aleatórios ou outros dados. Esta tecnica pode não garantir as propriedades de pseudominização, e ainda para mais pode haver riscos, uma vez que se a técnica não for cuidadosamente implementada, pode atribuir o mesmo pseudónimo para diferentes utilizadores, gerando colisões.
