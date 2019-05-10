@@ -41,11 +41,35 @@ O programa **1-matc.c** começa por ler o argumento passado na linha de comandos
 
 O problema é idêntico ao já identificado numa das perguntas acima, temos que introduzir como argumento uma quantidade de bytes sufecientes de modo a preencher o tamanho do *buffer* presente no programa, posteriormente temos de verificar a que valores correspondem os valores hexadecimais na tabela *ASCII*, e verifica que correspondem aos caracteres a,b,c,d. Por fim tivemos de verificar como o computador guarda os dados na memória, para isso reccoremos ao comando *lscpu* do terminal linux de forma a verificar, acabou-se por descobir que os guardados são guardados no formato *little-endian*, pelo que a ordem certa seria **dcba**.
 
-Como conclusão o argumento a passar seria o número sufeciente de bytes para preencher o *buffer** juntamente com os caracteres dcba.
+Como conclusão o argumento a passar seria o número sufeciente de bytes para preencher o *buffer* juntamente com os caracteres dcba.
 
 # Pergunta 2.1
 
-O problema encontrado durante o programa **overflow.c** está a relacionada com o tamanho dos inteiros que são depois usado para a realização das operações não havendo verificação de situações em que pode ocorrer *overflow*.
+O problema encontrado durante o programa **overflow.c** está a relacionada com o tamanho dos dados do tipo *size_t* que depois são usados para a realização da alocação de espaço para a matriz. No entanto esta gama de valores tem um valor limitado pelo que se a multiplicação para alocação de memória exceder essa gama de valores ocorre um overflow de inteiros. De modo a explorar essa vulnerabilidade completamos a *main* da seguinte maneira:
+
+```c 
+int main() {
+        char* matriz;
+        printf("Tamanho da matriz: %zu\n", SSIZE_MAX * SSIZE_MAX);
+        vulneravel(matriz, SSIZE_MAX, SSIZE_MAX, 'c');
+        return 0;
+}
+```
+Após a multiplicação destes valores, irá haver o tal overflow de inteiros, o que fará com que o resultado do tamanho da matriz será 1.
+
+Após a execução do programa, foi possível concluir que houve um erro designado *segmentation fault*.
+
 
 # Pergunta 2.2
-O problema aqui encontrado é o mesmo mencionado na questão 2.2, mas aqui vamos verificar situações de *underflow*.
+O problema aqui encontrado é o mesmo mencionado na questão 2.2, mas aqui vamos verificar situações de *underflow*, uma vez que as situações de *overflow* não podem acontecer devido ao facto de o *malloc* só acontecer enquanto a condição ```c tamanho < MAX_SIZE ``` se verifica. Uma vez que as variáveis *tamanho* e *tamanho_real* apresentam o mesmo tipo, também não se poderá explorar tirando partido desse ponto de vista. 
+No entanto, não existe verificação para valores negativos, pelo que de modo a testar o programa preenchemos a main da seguinte maneira:
+
+```c
+int main() {
+        
+        char origem[3] = "ok";
+        vulneravel(origem,0);
+}
+```
+
+Após a execução do mesmo deparamo nos com o mesmo erro apresentado na pergunta 2.1.
